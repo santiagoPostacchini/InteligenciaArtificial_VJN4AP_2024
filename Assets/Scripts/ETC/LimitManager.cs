@@ -13,36 +13,28 @@ public class LimitManager : MonoBehaviour
         instance = this;
     }
 
-    public Vector3 ApplyBounds(Vector3 pos, Boid boid)
+    public Vector3 ApplyBounds(Vector3 pos)
     {
         if(pos.x > width)
         {
             pos.x = -width + _radius;
-            boid.velocity.x = -boid.velocity.x;
-            boid.velocity.y = -boid.velocity.y;
         }
             
 
         if (pos.x < -width)
         {
             pos.x = width - _radius;
-            boid.velocity.x = -boid.velocity.x;
-            boid.velocity.y = -boid.velocity.y;
         }
 
         if (pos.z > height)
         {
             pos.z = -height + _radius;
-            boid.velocity.x = -boid.velocity.x;
-            boid.velocity.y = -boid.velocity.y;
         }
             
 
         if (pos.z < -height)
         {
             pos.z = height - _radius;
-            boid.velocity.x = -boid.velocity.x;
-            boid.velocity.y = -boid.velocity.y;
         }
 
         return pos;

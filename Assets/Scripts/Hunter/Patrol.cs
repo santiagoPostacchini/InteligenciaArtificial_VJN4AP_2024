@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Patrol : IState
 {
-
     public void OnEnter()
     {
         Debug.Log("Entramos a Patrol");

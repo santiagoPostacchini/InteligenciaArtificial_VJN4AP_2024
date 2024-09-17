@@ -20,7 +20,7 @@ public class Boid : MonoBehaviour
     void Update()
     {
         firstNode.Execute(this);
-        transform.position = LimitManager.instance.ApplyBounds(transform.position + velocity * Time.deltaTime, this);
+        transform.position = LimitManager.instance.ApplyBounds(transform.position + velocity * Time.deltaTime);
         transform.forward = velocity;
     }
 
