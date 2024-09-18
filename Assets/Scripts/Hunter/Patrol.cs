@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Patrol : IState
 {
+    private FSM _fsm;
+    public Patrol(FSM fsm)
+    {
+        _fsm = fsm;
+    }
     public void OnEnter()
     {
         Debug.Log("Entramos a Patrol");

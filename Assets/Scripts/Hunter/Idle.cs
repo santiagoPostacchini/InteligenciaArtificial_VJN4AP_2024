@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class Idle : IState
 {
+    private FSM _fsm;
 
+    public Idle(FSM fsm)
+    {
+        _fsm = fsm;
+    }
     public void OnEnter()
     {
         Debug.Log("Entramos a Idle");

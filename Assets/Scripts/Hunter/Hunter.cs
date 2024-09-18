@@ -6,22 +6,21 @@ public class Hunter : MonoBehaviour
 {
     public Vector3 velocity;
 
-    FSM _fsm;
+    private FSM _fsm;
 
     private void Start()
     {
         _fsm = new FSM();
-        _fsm.CreateState("Idle", new Idle());
-        _fsm.CreateState("Movement", new Movement());
-        _fsm.CreateState("Patrol", new Patrol());
-        _fsm.CreateState("Chase", new Chase());
+        _fsm.CreateState(FSM.HunterStates.Idle, new Idle(_fsm));
+        _fsm.CreateState(FSM.HunterStates.Patrol, new Patrol(_fsm));
+        _fsm.CreateState(FSM.HunterStates.Chase, new Chase(_fsm));
 
-        _fsm.ChangeState("Idle");
+        _fsm.ChangeState(FSM.HunterStates.Patrol);
 
     }
 
     void Update()
     {
-        
+        _fsm.ArtificialUpdate();
     }
 }

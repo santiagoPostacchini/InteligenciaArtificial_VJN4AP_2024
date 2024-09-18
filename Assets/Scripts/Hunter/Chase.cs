@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Chase : IState
 {
+    private FSM _fsm;
+    public Chase(FSM fsm)
+    {
+        _fsm = fsm;
+    }
     public void OnEnter()
     {
         Debug.Log("Entramos a Chase");
