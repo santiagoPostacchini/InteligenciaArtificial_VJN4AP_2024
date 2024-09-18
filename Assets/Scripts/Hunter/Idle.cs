@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Idle : IState
 {
+
     public void OnEnter()
     {
         Debug.Log("Entramos a Idle");
