@@ -5,9 +5,11 @@ using UnityEngine;
 public class Patrol : IState
 {
     private FSM _fsm;
-    public Patrol(FSM fsm)
+    private Hunter _hunter;
+    public Patrol(FSM fsm, Hunter hunter)
     {
         _fsm = fsm;
+        _hunter = hunter;
     }
     public void OnEnter()
     {
@@ -17,6 +19,7 @@ public class Patrol : IState
 
     {
         Debug.Log("Estamos en Patrol");
+
     }
     public void OnExit()
     {

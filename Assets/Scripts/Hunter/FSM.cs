@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class FSM
 {
-    public int energy = 20;
     public enum HunterStates
     {
         Idle,
@@ -15,7 +14,6 @@ public class FSM
     Dictionary<HunterStates, IState> _states = new Dictionary<HunterStates, IState>();
 
     IState _currentState;
-
 
     public void CreateState(HunterStates newState, IState state)
     {
