@@ -136,7 +136,7 @@ public class Boid : MonoBehaviour
         return steering;
     }
 
-    void Die()
+    public void Die()
     {
         GameManager.Instance.boids.Remove(this);
         Destroy(this);
@@ -240,6 +240,4 @@ public class Boid : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, GameManager.Instance.radiusSeparate);
         }
     }
-
-    
 }

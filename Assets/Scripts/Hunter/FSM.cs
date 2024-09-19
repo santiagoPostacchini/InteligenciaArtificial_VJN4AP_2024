@@ -27,9 +27,19 @@ public class FSM
     {
         if (_states.ContainsKey(state))
         {
-            _currentState.OnExit();
-            _currentState = _states[state];
-            _currentState.OnEnter();
+            if(_currentState != null)
+            {
+                Debug.Log("entre");
+                _currentState.OnExit();
+                _currentState = _states[state];
+                _currentState.OnEnter();
+            }
+            else
+            {
+                _currentState = _states[state];
+                _currentState.OnEnter();
+            }
+            
         }
 
     }

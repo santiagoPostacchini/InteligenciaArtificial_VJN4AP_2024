@@ -25,11 +25,15 @@ public class Idle : IState
         {
             _fsm.ChangeState(FSM.HunterStates.Chase);
         }
+        _hunter.energy += 2f * Time.deltaTime;
+        if(_hunter.energy >= _hunter.maxEnergy)
+        {
+            _fsm.ChangeState(FSM.HunterStates.Patrol);
+        }
     }
 
     public void OnExit()
     {
         Debug.Log("Salimos del Idle");
     }
-
 }
