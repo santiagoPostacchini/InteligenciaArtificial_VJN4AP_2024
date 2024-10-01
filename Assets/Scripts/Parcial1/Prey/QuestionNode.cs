@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestionNode : Node
+public class QuestionNode : P_Node
 {
-    public Node trueNode;
-    public Node falseNode;
+    public P_Node trueNode;
+    public P_Node falseNode;
 
     public TypeQuestion type;
 

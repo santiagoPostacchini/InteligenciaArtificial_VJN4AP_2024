@@ -8,7 +8,7 @@ public class Boid : MonoBehaviour
 {
     [SerializeField] float _maxVelocity;
     [SerializeField] float _maxSpeed;
-    public Node firstNode;
+    public P_Node firstNode;
     public Vector3 velocity;
 
     private void Start()

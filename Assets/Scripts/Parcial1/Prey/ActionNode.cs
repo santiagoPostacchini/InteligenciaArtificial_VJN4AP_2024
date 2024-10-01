@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionNode : Node
+public class ActionNode : P_Node
 {
     public TypeAction type;
 
