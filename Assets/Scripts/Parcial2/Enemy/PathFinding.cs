@@ -4,25 +4,38 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-    public void CalculateBFS(Node startingNode)
+    public List<Node> CalculateBFS(Node startingNode, Node goalNode)
     {
         var frontier = new Queue<Node>();
         frontier.Enqueue(startingNode);
 
-        var reached = new HashSet<Node>();
-        reached.Add(startingNode);
-
+        Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
+        
         while (frontier.Count > 0)
         {
             var current = frontier.Dequeue();
-            foreach (var node in current.GetNeighbours)
+            if (current == goalNode)
             {
-                if (!reached.Contains(node))
+                List<Node> path = new List<Node>();
+
+                while (current != startingNode)
                 {
-                    frontier.Enqueue(node);
-                    reached.Add(node);
+                    path.Add(current);
+                    current = cameFrom[current];
+                }
+                path.Reverse();
+                return path;
+            }
+            foreach (var next in current.GetNeighbours)
+            {
+                if (!next.blocked && !cameFrom.ContainsKey(next))
+                {
+                    frontier.Enqueue(next);
+                    cameFrom.Add(next, current);
                 }
             }
         }
+
+        return new List<Node>();
     }
 }

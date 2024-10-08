@@ -12,6 +12,7 @@ public class NodeGrid : MonoBehaviour
 
     private void Start()
     {
+        _grid = new Node[width, height];
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -19,7 +20,7 @@ public class NodeGrid : MonoBehaviour
                 var pos = new Vector2(x, y) * offset;
                 var go = Instantiate(prefab);
                 go.transform.position = pos;
-                //_grid[x, y] = go;
+                _grid[x, y] = go;
                 go.Initialize(this, x, y);
             }
         }

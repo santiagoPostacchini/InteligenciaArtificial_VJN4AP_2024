@@ -7,107 +7,131 @@ public class Enemy : MonoBehaviour
     public Vector3 velocity;
     public float maxVelocity, maxSpeed;
 
-    public Transform[] waypoints;
-
-    public int actualWaypoint;
-
     private FSM_E _fsm;
+
+    Coroutine _MoveCoroutine;
 
     private void Start()
     {
         
         _fsm = new FSM_E();
-        _fsm.CreateState(FSM_E.EnemyStates.Chase, new S_EnemyChase(_fsm, this));
-        _fsm.CreateState(FSM_E.EnemyStates.Patrol, new S_EnemyPatrol(_fsm, this));
-        _fsm.CreateState(FSM_E.EnemyStates.Return, new S_EnemyReturn(_fsm, this));
-        _fsm.ChangeState(FSM_E.EnemyStates.Patrol);
+        //_fsm.CreateState(FSM_E.EnemyStates.Chase, new S_EnemyChase(_fsm, this));
+        //_fsm.CreateState(FSM_E.EnemyStates.Patrol, new S_EnemyPatrol(_fsm, this));
+        //_fsm.CreateState(FSM_E.EnemyStates.Return, new S_EnemyReturn(_fsm, this));
+        //_fsm.ChangeState(FSM_E.EnemyStates.Patrol);
     }
 
     protected void Update()
     {
-        _fsm.ArtificialUpdate();
-
-        transform.position += velocity * Time.deltaTime;
-        transform.forward = velocity;
+        //_fsm.ArtificialUpdate();
+        //transform.position += velocity * Time.deltaTime;
+        //transform.forward = velocity;
     }
 
-    public bool CheckBoidNear(List<Boid> boidList, float radius)
+    public void SetPath(List<Node> path, Node _firstNode)
     {
-        foreach (Boid boid in boidList)
+        if(_MoveCoroutine != null)
         {
-            if (Vector3.Distance(transform.position, boid.transform.position) < radius)
-                return true;
+            StopCoroutine(_MoveCoroutine);
         }
-
-        return false;
+        transform.position = _firstNode.transform.position;
+        _MoveCoroutine = StartCoroutine(Move(path));
     }
 
-    public Boid GetNearestBoid(List<Boid> boidList, float radius)
+    IEnumerator Move (List<Node> path)
     {
-        Boid nearest = null;
-
-        foreach (var boid in boidList)
+        while(path.Count > 0)
         {
-            if (Vector3.Distance(transform.position, boid.transform.position) < radius || Vector3.Distance(transform.position, boid.transform.position) < Vector3.Distance(transform.position, nearest.transform.position))
-            {
-                nearest = boid;
-            }
+            Debug.Log("lista mayor a 0");
+            var dir = path[0].transform.position - transform.position;
+
+            transform.position += dir.normalized * maxSpeed * Time.deltaTime;
+
+            if (dir.magnitude <= 0.5f)
+                path.RemoveAt(0);
+
+            yield return null;
         }
-
-        return nearest;
+        _MoveCoroutine = null;
     }
 
-    public int GetNearestWaypoint(Transform[] waypoints)
-    {
-        Vector3 nearest = Vector3.positiveInfinity;
-        int index = 0;
-        int actualIndex = 0;
+    //public bool CheckBoidNear(List<Boid> boidList, float radius)
+    //{
+    //    foreach (Boid boid in boidList)
+    //    {
+    //        if (Vector3.Distance(transform.position, boid.transform.position) < radius)
+    //            return true;
+    //    }
 
-        foreach (Transform waypoint in waypoints)
-        {
-            if (Vector3.Distance(waypoint.position, transform.position) < Vector3.Distance(nearest, transform.position))
-            {
-                nearest = waypoint.transform.position;
-                index = actualIndex;
-            }
-            actualIndex++;
-        }
+    //    return false;
+    //}
 
-        return index;
-    }
+    //public Boid GetNearestBoid(List<Boid> boidList, float radius)
+    //{
+    //    Boid nearest = null;
 
-    public Vector3 Pursuit(Boid target)
-    {
-        var posPre = target.transform.position + target.velocity;
+    //    foreach (var boid in boidList)
+    //    {
+    //        if (Vector3.Distance(transform.position, boid.transform.position) < radius || Vector3.Distance(transform.position, boid.transform.position) < Vector3.Distance(transform.position, nearest.transform.position))
+    //        {
+    //            nearest = boid;
+    //        }
+    //    }
 
-        return Seek(posPre);
-    }
+    //    return nearest;
+    //}
 
-    public Vector3 Seek(Vector3 target)
-    {
-        Vector3 desired = target - transform.position;
-        desired.Normalize();
-        desired *= maxVelocity;
+    //public int GetNearestWaypoint(Transform[] waypoints)
+    //{
+    //    Vector3 nearest = Vector3.positiveInfinity;
+    //    int index = 0;
+    //    int actualIndex = 0;
 
-        Vector3 steering = desired - velocity;
-        steering = Vector3.ClampMagnitude(steering, maxSpeed);
+    //    foreach (Transform waypoint in waypoints)
+    //    {
+    //        if (Vector3.Distance(waypoint.position, transform.position) < Vector3.Distance(nearest, transform.position))
+    //        {
+    //            nearest = waypoint.transform.position;
+    //            index = actualIndex;
+    //        }
+    //        actualIndex++;
+    //    }
 
-        return steering;
-    }
+    //    return index;
+    //}
 
-    public void AddForce(Vector3 dir)
-    {
-        velocity = Vector3.ClampMagnitude(velocity + dir, maxVelocity);
-    }
+    //public Vector3 Pursuit(Boid target)
+    //{
+    //    var posPre = target.transform.position + target.velocity;
 
-    private void OnDrawGizmos()
-    {
-        if (GameManager.Instance != null)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawWireSphere(transform.position, GameManager.Instance.radiusDetect);
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, GameManager.Instance.radiusSeparate);
-        }
-    }
+    //    return Seek(posPre);
+    //}
+
+    //public Vector3 Seek(Vector3 target)
+    //{
+    //    Vector3 desired = target - transform.position;
+    //    desired.Normalize();
+    //    desired *= maxVelocity;
+
+    //    Vector3 steering = desired - velocity;
+    //    steering = Vector3.ClampMagnitude(steering, maxSpeed);
+
+    //    return steering;
+    //}
+
+    //public void AddForce(Vector3 dir)
+    //{
+    //    velocity = Vector3.ClampMagnitude(velocity + dir, maxVelocity);
+    //}
+
+    //private void OnDrawGizmos()
+    //{
+    //    if (GameManager.Instance != null)
+    //    {
+    //        Gizmos.color = Color.magenta;
+    //        Gizmos.DrawWireSphere(transform.position, GameManager.Instance.radiusDetect);
+    //        Gizmos.color = Color.red;
+    //        Gizmos.DrawWireSphere(transform.position, GameManager.Instance.radiusSeparate);
+    //    }
+    //}
 }

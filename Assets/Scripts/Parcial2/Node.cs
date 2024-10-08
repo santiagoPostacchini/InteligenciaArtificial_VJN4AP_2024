@@ -6,6 +6,7 @@ public class Node : MonoBehaviour
 {
     List<Node> _neighbours = new List<Node>();
     NodeGrid _grid;
+    public bool blocked = false;
     private int _x, _y;
 
     public void Initialize(NodeGrid grid, int x, int y)
@@ -30,15 +31,38 @@ public class Node : MonoBehaviour
             if (nodeRight != null)
                 _neighbours.Add(nodeRight);
 
-            var nodeUp = _grid.GetNode(_x + 1, _y);
+            var nodeUp = _grid.GetNode(_x, _y + 1);
             if (nodeUp != null)
                 _neighbours.Add(nodeUp);
 
-            var nodeDown = _grid.GetNode(_x + 1, _y);
+            var nodeDown = _grid.GetNode(_x, _y - 1);
             if (nodeDown != null)
                 _neighbours.Add(nodeDown);
 
             return _neighbours;
         }
+    }
+
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameManager.Instance.SetStartingNode(this);
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            GameManager.Instance.SetGoalNode(this);
+        }
+
+        if (Input.GetMouseButtonDown(2))
+        {
+            blocked = !blocked;
+
+            var color = blocked ? Color.red : Color.gray;
+
+            GetComponent<MeshRenderer>().material.color = color;
+        }
+
     }
 }
