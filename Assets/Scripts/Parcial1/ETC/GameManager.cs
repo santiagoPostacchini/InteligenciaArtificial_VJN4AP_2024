@@ -40,21 +40,28 @@ public class GameManager : MonoBehaviour
 
     public void SetStartingNode(Node node)
     {
-        if(_startingNode != null)
-        {
-            _startingNode.gameObject.GetComponent<Renderer>().material.color = Color.white;
-        }
-        _startingNode = node;
-        _startingNode.gameObject.GetComponent<Renderer>().material.color = Color.green;
+        var cond = _startingNode != null;
+
+        Material _mat = _startingNode.gameObject.GetComponent<Renderer>().material;
+
+        _mat.color = cond ? Color.green : Color.white;
+
+        _goalNode = node;
     }
     
     public void SetGoalNode(Node node)
     {
-        if (_goalNode != null)
-        {
-            _goalNode.gameObject.GetComponent<Renderer>().material.color = Color.white;
-        }
+        SetNode(_startingNode, node, Color.cyan);
+    }
+
+    private void SetNode(Node nodeToAssign, Node node, Color color)
+    {
+        var cond = _goalNode != null;
+
+        Material _mat = _startingNode.gameObject.GetComponent<Renderer>().material;
+
+        _mat.color = cond ? Color.cyan : Color.white;
+
         _goalNode = node;
-        _goalNode.gameObject.GetComponent<Renderer>().material.color = Color.cyan;
     }
 }
