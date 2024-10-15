@@ -38,4 +38,51 @@ public class PathFinding : MonoBehaviour
 
         return new List<Node>();
     }
+
+    public List<Node> CalculateDijkstra(Node startingNode, Node goalNode)
+    {
+        var frontier = new PriorityQueue<Node>();
+        frontier.Enqueue(startingNode, 0);
+
+        Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
+        Dictionary<Node, int> costSoFar = new Dictionary<Node, int>();
+        costSoFar.Add(startingNode, 0);
+
+        while (frontier.Count > 0)
+        {
+            var current = frontier.Dequeue();
+            if (current == goalNode)
+            {
+                List<Node> path = new List<Node>();
+
+                while (current != startingNode)
+                {
+                    path.Add(current);
+                    current = cameFrom[current];
+                }
+                path.Reverse();
+                return path;
+            }
+            foreach (var next in current.GetNeighbours)
+            {
+                if (next.blocked) continue;
+
+                int newCost = costSoFar[current] + next.Cost;
+
+                if (!costSoFar.ContainsKey(next))
+                {
+                    costSoFar.Add(next, newCost);
+                    frontier.Enqueue(next, newCost);
+                    cameFrom.Add(next, current);
+                } else if (costSoFar[next] > newCost)
+                {
+                    frontier.Enqueue(next, newCost);
+                    cameFrom[next] = current;
+                    costSoFar[next] = newCost;
+                }
+            }
+        }
+
+        return new List<Node>();
+    }
 }

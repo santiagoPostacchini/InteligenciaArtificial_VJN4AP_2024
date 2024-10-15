@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Node : MonoBehaviour
 {
+    public TextMeshProUGUI textCost;
     List<Node> _neighbours = new List<Node>();
     NodeGrid _grid;
     public bool blocked = false;
+    public int Cost = 1;
     private int _x, _y;
 
     public void Initialize(NodeGrid grid, int x, int y)
@@ -22,7 +25,7 @@ public class Node : MonoBehaviour
         {
             if(_neighbours.Count > 0)
                 return _neighbours;
-
+            
             var nodeLeft = _grid.GetNode(_x - 1, _y);
             if (nodeLeft != null)
                 _neighbours.Add(nodeLeft);
@@ -59,10 +62,29 @@ public class Node : MonoBehaviour
         {
             blocked = !blocked;
 
-            var color = blocked ? Color.red : Color.gray;
+            var color = blocked ? Color.red : Color.white;
 
             GetComponent<MeshRenderer>().material.color = color;
         }
 
+        if(Input.GetKey(KeyCode.UpArrow)) 
+        {
+            Cost++;
+            if(Cost > 50)
+            {
+                Cost = 50;
+            }
+            textCost.text = Cost.ToString();
+        }
+
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            Cost--;
+            if (Cost < 1)
+            {
+                Cost = 1;
+            }
+            textCost.text = Cost.ToString();
+        }
     }
 }

@@ -42,12 +42,11 @@ public class Enemy : MonoBehaviour
     {
         while(path.Count > 0)
         {
-            Debug.Log("lista mayor a 0");
             var dir = path[0].transform.position - transform.position;
 
             transform.position += dir.normalized * maxSpeed * Time.deltaTime;
 
-            if (dir.magnitude <= 0.5f)
+            if (dir.magnitude <= 0.1f)
                 path.RemoveAt(0);
 
             yield return null;

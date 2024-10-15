@@ -34,34 +34,31 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (_startingNode == null || _goalNode == null) return;
-            enemy.SetPath(pathFinding.CalculateBFS(_startingNode, _goalNode), _startingNode);
+            enemy.SetPath(pathFinding.CalculateDijkstra(_startingNode, _goalNode), _startingNode);
         }
     }
 
     public void SetStartingNode(Node node)
     {
-        var cond = _startingNode != null;
+        if (_startingNode != null)
+        {
+            _startingNode.gameObject.GetComponent<Renderer>().material.color = Color.white;
+        }
 
-        Material _mat = _startingNode.gameObject.GetComponent<Renderer>().material;
+        _startingNode = node;
 
-        _mat.color = cond ? Color.green : Color.white;
-
-        _goalNode = node;
+        _startingNode.gameObject.GetComponent<Renderer>().material.color = Color.cyan;
     }
     
     public void SetGoalNode(Node node)
     {
-        SetNode(_startingNode, node, Color.cyan);
-    }
-
-    private void SetNode(Node nodeToAssign, Node node, Color color)
-    {
-        var cond = _goalNode != null;
-
-        Material _mat = _startingNode.gameObject.GetComponent<Renderer>().material;
-
-        _mat.color = cond ? Color.cyan : Color.white;
+        if (_goalNode != null)
+        {
+            _goalNode.gameObject.GetComponent<Renderer>().material.color = Color.white;
+        }
 
         _goalNode = node;
+
+        _goalNode.gameObject.GetComponent<Renderer>().material.color = Color.green;
     }
 }
