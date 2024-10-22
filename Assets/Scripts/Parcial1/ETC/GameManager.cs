@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     private Node _startingNode, _goalNode;
     public PathFinding pathFinding;
     public Enemy enemy;
+    public LayerMask mask;
+
     private void Awake()
     {
         Instance = this;
@@ -34,7 +36,8 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (_startingNode == null || _goalNode == null) return;
-            enemy.SetPath(pathFinding.CalculateDijkstra(_startingNode, _goalNode), _startingNode);
+            //enemy.SetPath(pathFinding.CalculateDijkstra(_startingNode, _goalNode), _startingNode);
+            enemy.SetPath(pathFinding.CalculateGreedyBFS(_startingNode, _goalNode), _startingNode);
         }
     }
 
@@ -60,5 +63,12 @@ public class GameManager : MonoBehaviour
         _goalNode = node;
 
         _goalNode.gameObject.GetComponent<Renderer>().material.color = Color.green;
+    }
+
+    public bool InLineOfSight(Vector3 start, Vector3 end)
+    {
+        var dir = end - start;
+
+        return !Physics.Raycast(start, dir, dir.magnitude, mask);
     }
 }
